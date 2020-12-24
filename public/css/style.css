@@ -6,35 +6,28 @@ html, body {
     height: 100vh;
     margin: 0;
 }
-
 .full-height {
     height: 100vh;
 }
-
 .flex-center {
     align-items: center;
     display: flex;
     justify-content: center;
 }
-
 .position-ref {
     position: relative;
 }
-
 .top-right {
     position: absolute;
     right: 10px;
     top: 18px;
 }
-
 .content {
     text-align: center;
 }
-
 .title {
     font-size: 84px;
 }
-
 .links > a {
     color: #636b6f;
     padding: 0 25px;
@@ -44,7 +37,27 @@ html, body {
     text-decoration: none;
     text-transform: uppercase;
 }
-
 .m-b-md {
     margin-bottom: 30px;
+}
+#create_contact input[type=text], input[type=submit]{
+    width: 100%;
+}
+#create_contact select{
+    width: 100%;
+}
+p[class^="add_number"], p[id^="add_contact"]{
+    color: blue;
+}
+p[class^="add_number"]:hover, p[id^="add_contact"]:hover{
+    text-decoration: underline;
+}
+div[class^='form_contact_']{
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+#errorMessage{
+    display: none;
 }
