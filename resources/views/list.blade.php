@@ -10,8 +10,10 @@
                             <div class="card-header">
                                 <strong>{{ $contact->firstname }} {{ $contact->lastname }}</strong>
                                 <input type="hidden" name="{{ $contact->id }}">
-                                @if(Auth::user()->role == 1)
-                                    <button type="button" class="deleteContact" style="width: 20%; float: right;">X</button>
+                                @if(Auth::check())
+                                    @if(Auth::user()->role == 1)
+                                        <button type="button" class="deleteContact" style="width: 20%; float: right;">X</button>
+                                    @endif
                                 @endif
                             </div>
                             <ul class="list-group list-group-flush">
@@ -20,17 +22,21 @@
                                             <li class="list-group-item"><p><strong>{{ ucfirst($number->type) }}:</strong> {{ $number->number }}</p>
                                                 <div>
                                                     <input type="hidden" name="{{ $number->id }}">
-                                                    @if(Auth::user()->role == 1)
-                                                        <button type="button" class="deleteNumber" style="width: 30%; float: right; margin-left:10px;">Delete</button>
-                                                        <button type="button" class="editNumber" style="width: 20%; float: right; margin-left:10px;">Edit</button>
+                                                    @if(Auth::check())
+                                                        @if(Auth::user()->role == 1)
+                                                            <button type="button" class="deleteNumber" style="width: 30%; float: right; margin-left:10px;">Delete</button>
+                                                            <button type="button" class="editNumber" style="width: 20%; float: right; margin-left:10px;">Edit</button>
+                                                        @endif
                                                     @endif
                                                 </div>
                                             </li>
                                     @endif
                                 @endforeach
                             </ul>
-                            @if(Auth::user()->role == 1)
-                                <button type="button" class="insertNumber" style="width: 100%; float: none;">Add new number</button>
+                            @if(Auth::check())
+                                @if(Auth::user()->role == 1)
+                                    <button type="button" class="insertNumber" style="width: 100%; float: none;">Add new number</button>
+                                @endif
                             @endif
                         </div>
                     </div>

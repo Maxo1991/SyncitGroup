@@ -23,6 +23,7 @@
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
+                        <a href="{{ url('/list') }}">List</a>
                     @auth
                         @if(Auth::user()->role == 1)
                             <a href="{{ url('/admin') }}">Home</a>
