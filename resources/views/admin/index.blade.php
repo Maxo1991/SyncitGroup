@@ -1,10 +1,9 @@
 @extends('layouts.app')
-@section('title', '| Welcome')
+@section('title', '| Create')
 @section('content')
     <div class="container">
         <div id="create_contact">
             <div>
-                @csrf
                 <div class="row font-weight-bold">
                     <div class="col-md-3">First Name</div>
                     <div class="col-md-3">Last Name</div>
@@ -51,7 +50,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-3 offset-md-9">
-                        <input type="submit" onclick="return saveContact(this)" value="Save contact">
+                        <button type="button" id="saveContact">Save contact</button>
                     </div>
                 </div>
             </div>
@@ -100,6 +99,48 @@
                         );
                         j += 1;
                     });
+                    $("#saveContact").click(function(e){
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        e.preventDefault();
+                        var numberError = $("input").filter(function () {return $.trim($(this).val()).length == 0}).length;
+                        if(numberError === 0){
+                            $(this).parent().parent().siblings("div[class^='form_contact_']").each(function() {
+                                var i = 0;
+                                var classForm = $(this).attr('class');
+                                var firstName = $("."+classForm).find('.first_name').val();
+                                var lastName = $("."+classForm).find('.last_name').val();
+                                var typePhoneArray = [];
+                                var typeNumberArray = [];
+                                $("."+classForm).find(":selected").each(function(){
+                                    typePhoneArray.push($(this).val());
+                                })
+                                $("."+classForm).find("input[id^='number_']").each(function(){
+                                    typeNumberArray.push($(this).val());
+                                })
+                                var countNumberArray = typePhoneArray.length;
+                                var data = [];
+                                data['contacts'] = data.push([firstName, lastName, typePhoneArray, typeNumberArray, countNumberArray]);
+                                i++;
+                                console.log(data);
+                                $.ajax({
+                                    url: "{{ route('ajax') }}",
+                                    type: "POST",
+                                    data: {
+                                        contacts: data
+                                    },
+                                    success: function (response) {
+                                        location.reload();
+                                    }
+                                });
+                            });
+                        }else{
+                            $("#errorMessage").css('display', 'block');
+                        }
+                    })
                 });
             })(jQuery);
             var i = 1;
@@ -137,76 +178,6 @@
 
                 }else{
                     $(current).parent().parent().parent().remove();
-                }
-            }
-            function saveContact(current){
-                var numberError = $("input").filter(function () {return $.trim($(this).val()).length == 0}).length;
-                if(numberError === 0){
-                    $(current).parent().parent().siblings("div[class^='form_contact_']").each(function() {
-                        var i = 0;
-                        var classForm = $(this).attr('class');
-                        var firstName = $("."+classForm).find('.first_name').val();
-                        var lastName = $("."+classForm).find('.last_name').val();
-                        var typePhoneArray = [];
-                        var typeNumberArray = [];
-                        $("."+classForm).find(":selected").each(function(){
-                            typePhoneArray.push($(this).val());
-                        })
-                        $("."+classForm).find("input[id^='number_']").each(function(){
-                            typeNumberArray.push($(this).val());
-                        })
-                        var data = [];
-                        data['contacts'] = data.push([firstName, lastName, typePhoneArray, typeNumberArray]);
-                        i++;
-                        data = JSON.stringify(data);
-                        // console.log(data);
-                        // console.log(classForm);
-                        // console.log(firstName);
-                        // console.log(lastName);
-                        // console.log(typePhoneArray);
-                        // console.log(typeNumberArray);
-                        // var data = {
-                        //     "contacts": [{
-                        //         "0": {
-                        //             "firstname": "Igor",
-                        //             "lastname": "Maksimovic",
-                        //             "type": [
-                        //                 "Mobile",
-                        //                 "Home"
-                        //             ],
-                        //             "number": [
-                        //                 "0649350872",
-                        //                 "024567068"
-                        //             ]
-                        //         },
-                        //         "1": {
-                        //             "firstname": "Igor",
-                        //             "lastname": "Maksimovic",
-                        //             "type": [
-                        //                 "Mobile"
-                        //             ],
-                        //             "number": [
-                        //                 "066666666666"
-                        //             ]
-                        //         }
-                        //     }]
-                        // }
-                        data = JSON.stringify(data);
-                        $.ajax({
-                            url: "{{ route('ajax') }}",
-                            type: "POST",
-                            data: {
-                                contacts: data,
-                                _token: '{{csrf_token()}}'
-                            },
-                            success: function (response) {
-                                console.log(response);
-                                // $(this).prepend("<div class='alert alert-success'><strong>Success!</strong> You are inserted contacts!</div>");
-                            }
-                        });
-                    });
-                }else{
-                    $("#errorMessage").css('display', 'block');
                 }
             }
         </script>

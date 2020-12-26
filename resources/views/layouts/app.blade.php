@@ -34,7 +34,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    Syncit Group
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -59,6 +59,15 @@
                                 </li>
                             @endif
                         @else
+                            @if(Auth::user()->role == 1)
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('admin') }}">{{ __('Create') }}</a>
+                            </li>
+                            @elseif(Auth::user()->role == 2)
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('user') }}">{{ __('Home') }}</a>
+                            </li>
+                            @endif
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('list') }}">{{ __('List') }}</a>
                             </li>

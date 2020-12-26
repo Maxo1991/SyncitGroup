@@ -51,6 +51,11 @@ p[class^="add_number"], p[id^="add_contact"]{
 }
 p[class^="add_number"]:hover, p[id^="add_contact"]:hover{
     text-decoration: underline;
+    cursor: pointer;
+}
+.delete_number:hover{
+    cursor: pointer;
+    text-decoration: underline;
 }
 div[class^='form_contact_']{
     padding-top: 1rem;
